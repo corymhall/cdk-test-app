@@ -1,11 +1,29 @@
-import { App, Stack, StackProps } from 'aws-cdk-lib';
+import { App, RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
+import { HttpApi, HttpMethod } from 'aws-cdk-lib/aws-apigatewayv2';
+import { HttpLambdaIntegration } from 'aws-cdk-lib/aws-apigatewayv2-integrations';
+import { Runtime } from 'aws-cdk-lib/aws-lambda';
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 
 export class MyStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
+    new Bucket(this, 'Bucket', {
+      // if I add any objects
+      // autoDeleteObjects: true,
+      removalPolicy: RemovalPolicy.DESTROY,
+    });
 
-    // define resources here...
+    const handler = new NodejsFunction(this, 'handler', {
+      runtime: Runtime.NODEJS_LATEST,
+    });
+    const api = new HttpApi(this, 'chall-Api', {});
+    api.addRoutes({
+      path: '/hello',
+      methods: [HttpMethod.GET],
+      integration: new HttpLambdaIntegration('integration', handler),
+    });
   }
 }
 
@@ -17,7 +35,8 @@ const devEnv = {
 
 const app = new App();
 
-new MyStack(app, 'cdk-test-app-dev', { env: devEnv });
+new MyStack(app, 'chall-cdk-test-app-dev', { env: devEnv });
 // new MyStack(app, 'cdk-test-app-prod', { env: prodEnv });
 
 app.synth();
+

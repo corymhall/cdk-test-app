@@ -16,6 +16,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
     prettier: true,
   },
   packageManager: NodePackageManager.NPM,
+  deps: ['@pulumi/pulumi', '@pulumi/cdk'],
 
   // deps: [],                /* Runtime dependencies of this module. */
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
@@ -25,4 +26,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
 const eslint = project.tryFindObjectFile('.eslintrc.json');
 // I don't want to show linting errors for things that get auto fixed
 eslint?.addOverride('extends', ['plugin:import/typescript']);
+const packageJson = project.tryFindObjectFile('package.json');
+packageJson?.addOverride('main', 'src/main.ts');
 project.synth();
+

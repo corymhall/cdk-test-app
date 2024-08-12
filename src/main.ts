@@ -1,14 +1,14 @@
-import { App, RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
+import * as pulumiCdk from '@pulumi/cdk';
+import { RemovalPolicy } from 'aws-cdk-lib';
 import { HttpApi, HttpMethod } from 'aws-cdk-lib/aws-apigatewayv2';
 import { HttpLambdaIntegration } from 'aws-cdk-lib/aws-apigatewayv2-integrations';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
-import { Construct } from 'constructs';
 
-export class MyStack extends Stack {
-  constructor(scope: Construct, id: string, props: StackProps = {}) {
-    super(scope, id, props);
+export class MyStack extends pulumiCdk.Stack {
+  constructor(id: string, props: pulumiCdk.StackOptions = {}) {
+    super(id, props);
     new Bucket(this, 'Bucket', {
       // if I add any objects
       // autoDeleteObjects: true,
@@ -24,19 +24,11 @@ export class MyStack extends Stack {
       methods: [HttpMethod.GET],
       integration: new HttpLambdaIntegration('integration', handler),
     });
+
+    this.synth();
   }
 }
 
-// for development, use account/region from cdk cli
-const devEnv = {
-  account: process.env.CDK_DEFAULT_ACCOUNT,
-  region: process.env.CDK_DEFAULT_REGION,
-};
-
-const app = new App();
-
-new MyStack(app, 'chall-cdk-test-app-dev', { env: devEnv });
+new MyStack('chall-cdk-test-app-dev');
 // new MyStack(app, 'cdk-test-app-prod', { env: prodEnv });
-
-app.synth();
 

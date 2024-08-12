@@ -79,6 +79,14 @@
       "type": "build"
     },
     {
+      "name": "@pulumi/cdk",
+      "type": "runtime"
+    },
+    {
+      "name": "@pulumi/pulumi",
+      "type": "runtime"
+    },
+    {
       "name": "aws-cdk-lib",
       "version": "^2.151.0",
       "type": "runtime"

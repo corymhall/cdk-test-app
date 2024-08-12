@@ -1,0 +1,7 @@
+name: cdk-test-app
+runtime: nodejs
+description: CDK app migrated to pulumi-cdk
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: ""

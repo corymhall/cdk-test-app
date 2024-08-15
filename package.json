@@ -44,7 +44,7 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
-    "@pulumi/cdk": "^v0.5.0",
+    "@pulumi/cdk": "^0.5.0",
     "@pulumi/pulumi": "^3.128.0",
     "aws-cdk-lib": "^2.151.0",
     "constructs": "^10.0.5"

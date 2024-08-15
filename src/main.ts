@@ -1,8 +1,7 @@
 import { App, RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
 import { HttpApi, HttpMethod } from 'aws-cdk-lib/aws-apigatewayv2';
 import { HttpLambdaIntegration } from 'aws-cdk-lib/aws-apigatewayv2-integrations';
-import { Runtime } from 'aws-cdk-lib/aws-lambda';
-import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 
@@ -15,8 +14,12 @@ export class MyStack extends Stack {
       removalPolicy: RemovalPolicy.DESTROY,
     });
 
-    const handler = new NodejsFunction(this, 'handler', {
+    const handler = new Function(this, 'handler', {
+      handler: 'index.handler',
       runtime: Runtime.NODEJS_LATEST,
+      code: Code.fromInline(
+        'export default function handler() { return { statusCode: 200, body: "Hello World" };}',
+      ),
     });
     const api = new HttpApi(this, 'chall-Api', {});
     api.addRoutes({
@@ -39,4 +42,3 @@ new MyStack(app, 'chall-cdk-test-app-dev', { env: devEnv });
 // new MyStack(app, 'cdk-test-app-prod', { env: prodEnv });
 
 app.synth();
-

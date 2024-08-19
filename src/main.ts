@@ -34,4 +34,3 @@ export class MyStack extends pulumiCdk.Stack {
 }
 
 new MyStack('chall-cdk-test-app-dev');
-// new MyStack(app, 'cdk-test-app-prod', { env: prodEnv });

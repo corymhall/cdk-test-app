@@ -3,6 +3,12 @@ import { NodePackageManager } from 'projen/lib/javascript';
 const project = new awscdk.AwsCdkTypeScriptApp({
   cdkVersion: '2.151.0',
   defaultReleaseBranch: 'main',
+  buildWorkflow: false,
+  release: false,
+  githubOptions: {
+    mergify: false,
+    pullRequestLint: false,
+  },
   name: 'cdk-test-app',
   projenrcTs: true,
   prettier: true,

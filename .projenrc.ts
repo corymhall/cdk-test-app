@@ -5,6 +5,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   defaultReleaseBranch: 'main',
   buildWorkflow: false,
   release: false,
+  depsUpgrade: false,
   githubOptions: {
     mergify: false,
     pullRequestLint: false,
